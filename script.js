@@ -77,11 +77,11 @@ async function showNumberAll() {
 
 // showNumberAll();
 
-
+/** main: call all 3 showNumber functions. */
 async function main() {
-  await showNumberTrivia(17)
-  await showNumberRace(1,2,3,4)
-  await showNumberAll()
+  await showNumberTrivia(17);
+  await showNumberRace(1, 2, 3, 4);
+  await showNumberAll();
 }
 
-main()
+// main();
