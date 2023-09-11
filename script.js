@@ -1,5 +1,8 @@
 "use strict";
 
+const BASE_URL = '';
+
+
 /** showNumberTrivia: sends request to Numbers API for data on speific number
  * Logs string of trivia for that number to the console.
  */
@@ -11,6 +14,10 @@ async function showNumberTrivia(num) {
 }
 
 // showNumberTrivia(17);
+
+
+
+
 
 /** showNumberRace: Sends 4 requests to Numbers API and which ever resolves first,
  * will print the trivia for the first promise to resolve.
@@ -31,6 +38,12 @@ async function showNumberRace(num1, num2, num3, num4) {
 // showNumberRace(24, 31, 5, 8);
 
 
+
+
+
+
+
+
 /** showNumberAll: sends requests about different numbers to Numbers API.
  * Logs an array of resolved trivia, and an array of error messages from rejected promises.
   */
@@ -43,39 +56,25 @@ async function showNumberAll() {
   // arr of objs describing what happened
   const results = await Promise.allSettled([res1, res2, res3, res4]);
 
+  const resolvedResponses = results.filter(result =>
+    result.status === 'fulfilled' && result.value.ok)
+    .map(result => result.value);
 
-  const resolvedResponses = results.filter(promise =>
-    promise.status === 'fulfilled' && promise.value.ok)
-    .map(prom => prom.value);
+  const rejectedReponses = results.filter(result => !result.value.ok)
+    .map(result => result.value);
 
-  const rejectedReponses = results.filter(promise => !promise.value.ok)
-    .map(prom => prom.value);
 
-  // console.log(rejectedReponses);
+  const validPromises = resolvedResponses.map(res => res.json());
+  const invalidStatusTexts = rejectedReponses.map(res => `Request failed with status code ${res.status}`);
 
-  // const fulfilledArr = await resolvedResponses.map(async function (res) {
-  //   return await res.json();
-  // });
-  const rejectedArr = [];
-
-  const fulfilledArr = [];
-
-  for (const res of resolvedResponses) {
-    const data = await res.json();
-    fulfilledArr.push(data.text);
-  }
-
-  for (const res of rejectedReponses) {
-    // const data = await res.text();
-    rejectedArr.push(res.statusText);
-  }
+  const fulfilledArr = await Promise.all(validPromises);
 
   console.log("showNumberAll fulfilled: ", fulfilledArr);
-  console.log("showNumberAll rejected: ", rejectedArr);
+  console.log("showNumberAll rejected: ", invalidStatusTexts);
 }
 
 
-// showNumberAll();
+showNumberAll();
 
 /** main: call all 3 showNumber functions. */
 async function main() {
