@@ -1,13 +1,13 @@
 "use strict";
 
-const BASE_URL = '';
+const BASE_URL = 'http://numbersapi.com';
 
 
 /** showNumberTrivia: sends request to Numbers API for data on speific number
  * Logs string of trivia for that number to the console.
  */
 async function showNumberTrivia(num) {
-  const fact1 = await fetch(`http://numbersapi.com/${num}?json`);
+  const fact1 = await fetch(`${BASE_URL}/${num}?json`);
   const fact1Data = await fact1.json();
 
   console.log("fact1Data is", fact1Data.text);
@@ -23,10 +23,10 @@ async function showNumberTrivia(num) {
  * will print the trivia for the first promise to resolve.
  */
 async function showNumberRace(num1, num2, num3, num4) {
-  const res1 = fetch(`http://numbersapi.com/${num1}?json`);
-  const res2 = fetch(`http://numbersapi.com/${num2}?json`);
-  const res3 = fetch(`http://numbersapi.com/${num3}?json`);
-  const res4 = fetch(`http://numbersapi.com/${num4}?json`);
+  const res1 = fetch(`${BASE_URL}/${num1}?json`);
+  const res2 = fetch(`${BASE_URL}/${num2}?json`);
+  const res3 = fetch(`${BASE_URL}/${num3}?json`);
+  const res4 = fetch(`${BASE_URL}/${num4}?json`);
 
   const winnerPromise = await Promise.race([res1, res2, res3, res4]);
 
@@ -48,10 +48,10 @@ async function showNumberRace(num1, num2, num3, num4) {
  * Logs an array of resolved trivia, and an array of error messages from rejected promises.
   */
 async function showNumberAll() {
-  const res1 = fetch(`http://numbersapi.com/32?json`);
-  const res2 = fetch(`http://numbersapi.com/2?json`);
-  const res3 = fetch(`http://numbersapi.com/432?json`);
-  const res4 = fetch(`http://numbersapi.com/WRONG?json`);
+  const res1 = fetch(`${BASE_URL}/32?json`);
+  const res2 = fetch(`${BASE_URL}/2?json`);
+  const res3 = fetch(`${BASE_URL}/432?json`);
+  const res4 = fetch(`${BASE_URL}/WRONG?json`);
 
   // arr of objs describing what happened
   const results = await Promise.allSettled([res1, res2, res3, res4]);
@@ -74,7 +74,7 @@ async function showNumberAll() {
 }
 
 
-showNumberAll();
+// showNumberAll();
 
 /** main: call all 3 showNumber functions. */
 async function main() {
